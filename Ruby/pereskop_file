@@ -1,0 +1,145 @@
+#!/bin/bash
+# Oleg Mironenko om@mail.ru
+# 2011-09-14 
+# 2011-10-17 All OK 
+# Print in file
+#
+#########################################################
+#		стандартные команды взвимодействия
+#	stop	- shutdoon server
+#	reboot	- перегрузить server
+#	clear	- очистить счетчик err. 
+#	info	- выслать текущее состояние server
+#
+#########################################################
+#
+#	!!! при первом запуске удалить файл $file_testement !!!
+#
+#
+#######################Начальные переменные
+
+#  PING yandex.ru (93.158.134.11) 56(84) bytes of data.
+#  64 bytes from yandex.ru (93.158.134.11): icmp_seq=1 ttl=55 time=2.75 ms
+#
+# --- yandex.ru ping statistics ---
+# 1 packets transmitted, 1 received, 0% packet loss, time 0ms
+# rtt min/avg/max/mdev = 2.754/2.754/2.754/0.000 msu 
+
+err=0
+info=0
+file_testement="/home/morse/testement.txt"
+file_for_LUX="/opt/awk/pereskop" # тестируемый файл для LUX
+#########################################################
+
+# читаем файл завещания testement
+
+#if [[ -e $file_testement ]] # если файл существует
+#  then
+#      test= awk '{print $1}' < $file_testement # читаем файл
+#     echo ${test}
+#fi
+
+
+# нормальная работа "%10s %6d\n", $1
+
+#------------------------yandex.ru------------------------------------
+sms_y=$(ping -c 1 -i 1 -w 1 -W 1 yandex.ru | awk '/avg/ { x=split( $4, a, "/" ); printf "%2d", a[2]}')
+sms=$(date +"%d-%m-%Y")"   "$(date +"%T")"  y="${sms_y}
+
+if [ -n "$sms_y" ] 
+	then
+#		echo "Строка не пустая."
+		if [ "$sms_y" -gt "200" ] 
+			then 
+				err=1
+		fi
+	else  # Обработка ошибки
+		echo "Строка  пустая."
+		err=1
+	fi 
+
+
+#------------------------google.com------------------------------------
+sms_g=$(ping -c 1 -i 1 -w 1 -W 1 google.com| awk '/avg/ { x=split( $4, a, "/" ); printf "%2d", a[2]}')
+sms=${sms}",g="${sms_g}
+
+if [ -n "$sms_g" ] 
+	then
+#		echo "Строка не пустая."
+		if [ "$sms_g" -gt "300" ] 
+			then 
+				err=1
+		fi
+	else  # Обработка ошибки
+		echo "Строка  пустая."
+		err=1
+	fi   
+
+#------------------------DNS------------------------------------
+sms_dns=$(ping -c 1 -i 1 -w 1 -W 1 195.14.50.1| awk '/avg/ { x=split( $4, a, "/" ); printf "%2d", a[2]}')
+sms=${sms}",dns="${sms_dns}
+
+if [ -n "$sms_dns" ] 
+	then
+#		echo "Строка не пустая."
+		if [ "$sms_dns" -gt "100" ] 
+			then 
+				err=1
+		fi
+	else  # Обработка ошибки
+		echo "Строка  пустая."
+		err=1
+	fi   
+
+#------------------------SERVER ARGUS------------------------------------
+sms_srv=$(ping -c 1 -i 1 -w 1 -W 1 89.179.155.114| awk '/avg/ { x=split( $4, a, "/" ); printf "%2d", a[2]}')
+sms=${sms}",srv="${sms_srv}
+
+if [ -n "$sms_srv" ] 
+	then
+#		echo "Строка не пустая."
+		if [ "$sms_srv" -gt "100" ] 
+			then 
+				err=1
+		fi
+	else  # Обработка ошибки
+		echo "Строка  пустая."
+		err=1
+	fi  
+
+#------------------------sensors for cpu ----------------------------------
+sms_cpu=$(sensors | awk '/CPU Temperature/ {print($3)}')
+sms=${sms}",cpu="${sms_cpu}
+
+#------------------------hddtemp------------------------------------
+sms_hddtemp=$(hddtemp /dev/sda | awk  '/dev/ {print($3)}')
+sms=${sms}",hdd="${sms_hddtemp}
+
+#------------------------sensors for MB Temperature -----------------------
+sms_mb=$(sensors | awk '/MB Temperature/ {print($3)}')
+sms=${sms}",mb="${sms_mb}
+
+#------------------------ Server uptime -----------------------
+sms_upt=$(uptime | awk '{print($3$4$5)}')
+sms=${sms}",UpT="${sms_upt}
+
+
+#echo ${sms} >> /var/log/perescop.log
+
+#*********************** При err !=0 записать в файл  *************
+
+# если запрос на выслать информцию есть -> высылаем
+if [ $err -ne 0 ]; then	
+    echo ${sms} >> /var/log/perescop.log
+fi
+
+#echo "4" > $file_testement
+
+#echo $err
+
+
+
+
+
+
+

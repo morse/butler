@@ -1,0 +1,20 @@
+Arsenal#Baunty#1263476#100#1.45
+Arsenal#Snikers#5677765#200#2.45
+Arsenal#Kity-Kat#6783476#50#0.45
+Arsenal#Snikers Beag#1273476#150#5.00
+Arsenal#Milk#468976#1000#1.50
+Arsenal#Masdam#2738956#20#12.50
+Arsenal#Bread#9758564#1200#1.50
+Arsenal#Socks#9856732#500#2.00
+Sunrise#Ruslan#1263476#5#1.45
+Sunrise#Mary#5677765#35#1.75
+Sunrise#Kity-Kat#6783476#350#4.10
+Sunrise#Snikers Beag#1273476#700#1.95
+Sunrise#Milk#468976#200#1.25
+Sunrise#Masdam#2738956#40#13.60
+Rodrigo#Clicket#23464#1#1.00
+Rodrigo#Camel#3456#2#3.00
+Rodrigo#Java#777#5#2.00
+Matteo & Son's#Clicket big#23464#1#1.00
+Matteo & Son's#Camel metal#3456#2#3.00
+Matteo & Son's#Java bad#777#5#2.00
